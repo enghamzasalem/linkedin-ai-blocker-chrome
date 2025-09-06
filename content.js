@@ -386,12 +386,28 @@ Be STRICT - if there's ANY doubt, mark as AI. Respond with only "AI" if AI-gener
     toggleButton.className = 'ai-detector-toggle-btn';
     toggleButton.onclick = () => this.toggleDetection();
 
-    // Try to find a good place to insert the toggle button
-    const header = document.querySelector('header') || document.querySelector('.global-nav');
-    if (header) {
-      header.appendChild(toggleButton);
-    } else {
-      document.body.appendChild(toggleButton);
+    // Try multiple selectors to find the best location for the button
+    const possibleContainers = [
+      document.querySelector('.global-nav__primary-items'),
+      document.querySelector('.global-nav__content'),
+    ];
+
+    let inserted = false;
+    for (const container of possibleContainers) {
+      if (container) {
+        // Insert the button at the end of the container
+        container.appendChild(toggleButton);
+        inserted = true;
+        break;
+      }
+    }
+
+    // Fallback: create a fixed position container
+    if (!inserted) {
+      const buttonContainer = document.createElement('div');
+      buttonContainer.id = 'ai-detector-container';
+      buttonContainer.appendChild(toggleButton);
+      document.body.appendChild(buttonContainer);
     }
   }
 

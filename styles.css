@@ -47,6 +47,9 @@
   margin: 8px;
   z-index: 10000;
   position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .ai-detector-toggle-btn:hover {
@@ -61,7 +64,6 @@
 .ai-detector-toggle-btn.disabled {
   background: linear-gradient(135deg, #95a5a6, #7f8c8d);
   opacity: 0.7;
-  cursor: not-allowed;
 }
 
 .ai-detector-toggle-btn.disabled:hover {
@@ -257,4 +259,30 @@
 
 .ai-hide-original-btn:active {
   transform: translateY(0);
+}
+
+/* Fixed position container for AI detector button */
+#ai-detector-container {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  z-index: 10000 !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  padding-top: 9px !important;
+  padding-right: 10px !important;
+  padding-bottom: 9px !important;
+  padding-left: 10px !important;
+  border-radius: 0 0 0 0px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(102, 126, 234, 0.2) !important;
+  border-top: none !important;
+  border-right: none !important;
+}
+
+#ai-detector-container .ai-detector-toggle-btn {
+  margin: 0 !important;
+  display: block !important;
+  width: 100% !important;
 }
