@@ -382,7 +382,6 @@ Be STRICT - if there's ANY doubt, mark as AI. Respond with only "AI" if AI-gener
   addToggleButton() {
     const toggleButton = document.createElement('button');
     toggleButton.id = 'ai-detector-toggle';
-    toggleButton.innerHTML = '🤖 AI Detector';
     toggleButton.className = 'ai-detector-toggle-btn';
     toggleButton.onclick = () => this.toggleDetection();
 
@@ -409,10 +408,24 @@ Be STRICT - if there's ANY doubt, mark as AI. Respond with only "AI" if AI-gener
       buttonContainer.appendChild(toggleButton);
       document.body.appendChild(buttonContainer);
     }
+    
+    // Set initial button appearance based on current settings
+    this.updateToggleButtonAppearance();
   }
 
   toggleDetection() {
     this.isEnabled = !this.isEnabled;
+    
+    // Update the button appearance
+    this.updateToggleButtonAppearance();
+    
+    // Sync with popup by updating the stored setting
+    chrome.storage.sync.set({ autoDetect: this.isEnabled }, () => {
+      console.log('Auto-detect setting synced:', this.isEnabled);
+    });
+  }
+
+  updateToggleButtonAppearance() {
     const toggleBtn = document.getElementById('ai-detector-toggle');
     if (toggleBtn) {
       toggleBtn.classList.toggle('disabled', !this.isEnabled);
@@ -445,6 +458,7 @@ Be STRICT - if there's ANY doubt, mark as AI. Respond with only "AI" if AI-gener
           this.geminiEndpoint = message.data.value;
         } else if (message.data.key === 'autoDetect') {
           this.isEnabled = message.data.value;
+          this.updateToggleButtonAppearance();
         }
       } else if (message.action === 'getStats') {
         sendResponse({ postsAnalyzed: this.postsAnalyzed });
